@@ -1,77 +1,54 @@
 #!/bin/bash
 
 # --- Constants ---
-readonly SCRIPT_NAME=$(basename "$0")
+readonly SCRIPT_DIR="/script/tools"
 
-# --- Functions ---
-
-print_menu() {
-    echo "Select an action:"
-    echo "1) Resize Deployment Resources"
-    echo "2) Resize HPA Replicas"
-    echo "0) Exit"
-}
-
-prompt_variables_resize_deployment() {
-    echo "--- Resize Deployment Resources ---"
-    read -rp "Enter deployment name: " DEPLOYMENT_NAME
-    read -rp "Enter size (PP, P, M, G, GG): " SIZE
-    read -rp "Namespace (leave empty for current project): " NAMESPACE
-    read -rp "Enable verbose mode? (y/N): " VERBOSE_ANSWER
-    read -rp "Enable dry-run mode? (y/N): " DRY_RUN_ANSWER
-
-    VERBOSE=""
-    DRY_RUN=""
-
-    [[ "$VERBOSE_ANSWER" =~ ^[Yy]$ ]] && VERBOSE="-v"
-    [[ "$DRY_RUN_ANSWER" =~ ^[Yy]$ ]] && DRY_RUN="--dry-run"
-
-    ./resize-deployment.sh $VERBOSE $DRY_RUN ${NAMESPACE:+-n $NAMESPACE} "$DEPLOYMENT_NAME" "$SIZE"
-}
-
-prompt_variables_resize_hpa() {
-    echo "--- Resize HPA Replicas ---"
-    read -rp "Enter deployment name (HPA name): " DEPLOYMENT_NAME
-    read -rp "Enter minimum replicas: " MIN_REPLICAS
-    read -rp "Enter maximum replicas: " MAX_REPLICAS
-    read -rp "Namespace (leave empty for current project): " NAMESPACE
-    read -rp "Enable verbose mode? (y/N): " VERBOSE_ANSWER
-    read -rp "Enable dry-run mode? (y/N): " DRY_RUN_ANSWER
-
-    VERBOSE=""
-    DRY_RUN=""
-
-    [[ "$VERBOSE_ANSWER" =~ ^[Yy]$ ]] && VERBOSE="-v"
-    [[ "$DRY_RUN_ANSWER" =~ ^[Yy]$ ]] && DRY_RUN="--dry-run"
-
-    ./resize-hpa.sh $VERBOSE $DRY_RUN ${NAMESPACE:+-n $NAMESPACE} "$DEPLOYMENT_NAME" "$MIN_REPLICAS" "$MAX_REPLICAS"
-}
-
-# --- Main Script ---
-
-clear
+# --- Menu ---
 while true; do
-    print_menu
-    read -rp "Enter choice: " CHOICE
+    echo "======================"
+    echo " 🚀 OpenShift Resizer "
+    echo "======================"
+    echo "1) Resize Deployment"
+    echo "2) Resize HPA"
+    echo "3) Exit"
+    echo ""
+    read -rp "Choose an option [1-3]: " choice
 
-    case "$CHOICE" in
+    case "$choice" in
         1)
-            prompt_variables_resize_deployment
+            echo ""
+            read -rp "Enter deployment name: " deployment_name
+            read -rp "Enter replicas count: " replicas
+            read -rp "Enter namespace (leave empty for current): " namespace
+            echo ""
+
+            if [[ -n "$namespace" ]]; then
+                "$SCRIPT_DIR/resize-deployment.sh" -n "$namespace" "$deployment_name" "$replicas"
+            else
+                "$SCRIPT_DIR/resize-deployment.sh" "$deployment_name" "$replicas"
+            fi
             ;;
         2)
-            prompt_variables_resize_hpa
+            echo ""
+            read -rp "Enter deployment name (for HPA): " hpa_name
+            read -rp "Enter min replicas: " min_replicas
+            read -rp "Enter max replicas: " max_replicas
+            read -rp "Enter namespace (leave empty for current): " namespace
+            echo ""
+
+            if [[ -n "$namespace" ]]; then
+                "$SCRIPT_DIR/resize-hpa.sh" -n "$namespace" "$hpa_name" "$min_replicas" "$max_replicas"
+            else
+                "$SCRIPT_DIR/resize-hpa.sh" "$hpa_name" "$min_replicas" "$max_replicas"
+            fi
             ;;
-        0)
-            echo "Exiting."
+        3)
+            echo "Bye 👋"
             exit 0
             ;;
         *)
-            echo "Invalid choice. Please select 1, 2, or 0."
+            echo "Invalid choice. Please choose again."
             ;;
     esac
-
-    echo ""
-    read -rp "Press enter to continue..."
-    clear
 
 done
