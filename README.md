@@ -11,8 +11,6 @@ Auto-detect namespace if not explicitly provided.
 Clear error handling and helpful usage output.
 
 🛠 Size Options
-
-Code	Description	CPU Request/Limit	Memory Request/Limit
 PP	Extra Large	2000m / 4000m	4Gi / 8Gi
 P	Large	1000m / 2000m	2Gi / 4Gi
 M	Medium	500m / 1000m	1Gi / 2Gi
@@ -31,15 +29,11 @@ Options:
 
 📚 Examples
 Resize my-deployment to Medium size in the current namespace:
-
 ./resize.sh my-deployment M
-Resize another-deployment in a specific namespace and preview changes without applying:
 
+Resize another-deployment in a specific namespace and preview changes without applying:
 ./resize.sh -n custom-namespace --dry-run -v another-deployment P
+
 ⚡ Requirements
 OpenShift CLI (oc)
-
 jq (for JSON processing)
-
-📝 License
-This project is licensed under the MIT License.
