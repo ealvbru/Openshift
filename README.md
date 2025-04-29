@@ -14,7 +14,7 @@ Clear error handling and helpful usage output.
 
 📋 Usage
 
-./resize.sh [-n namespace] [-v] [--dry-run] <deployment-name> <size>
+./deployment_resize.sh [-n namespace] [-v] [--dry-run] <deployment-name> <size>
 
 Options:
 -n, --namespace — Specify the OpenShift namespace (defaults to current project if not provided).
@@ -29,11 +29,11 @@ Options:
 
 Resize my-deployment to Medium size in the current namespace
 
-./resize.sh my-deployment M
+./deployment_resize.sh my-deployment M
 
 Resize another-deployment in a specific namespace and preview changes without applying:
 
-./resize.sh -n custom-namespace --dry-run -v another-deployment P
+./deployment_resize.sh -n custom-namespace --dry-run -v another-deployment P
 
 ⚡ Requirements
 
