@@ -1,55 +1,119 @@
-🚀 Features
-Resize deployments quickly using simple size codes (PP, P, M, G, GG).
+OpenShift Deployment Resizer
 
-Supports multiple containers within a single deployment.
+A lightweight and user-friendly Bash script to resize container resources (CPU and Memory) for an OpenShift Deployment based on predefined sizes.
 
-Dry Run Mode (--dry-run) — preview the JSON patch without applying changes.
+Features
 
-Verbose Mode (-v) — print the generated JSON patch body for review.
+Resize deployments easily using simple size codes: PP, P, M, G, GG
 
-Auto-detect namespace if not explicitly provided.
+Dry Run Mode (--dry-run): Preview the generated JSON patch without applying changes
 
-Clear error handling and helpful usage output.
+Verbose Mode (-v): Print the full JSON patch body for detailed inspection
 
-🛠 Size Options
+Auto-detects the current namespace if not provided
 
-Code	Description	CPU Request/Limit	Memory Request/Limit
-PP	Extra Large	2000m / 4000m	4Gi / 8Gi
-P	Large	1000m / 2000m	2Gi / 4Gi
-M	Medium	500m / 1000m	1Gi / 2Gi
-G	Small	250m / 500m	512Mi / 1Gi
-GG	Extra Small	100m / 200m	256Mi / 512Mi
-📋 Usage
-bash
-Copiar
-Editar
+Clear error handling and informative usage instructions
+
+Size Options
+
+Code
+
+Description
+
+CPU Request/Limit
+
+Memory Request/Limit
+
+PP
+
+Extra Large
+
+2000m / 4000m
+
+4Gi / 8Gi
+
+P
+
+Large
+
+1000m / 2000m
+
+2Gi / 4Gi
+
+M
+
+Medium
+
+500m / 1000m
+
+1Gi / 2Gi
+
+G
+
+Small
+
+250m / 500m
+
+512Mi / 1Gi
+
+GG
+
+Extra Small
+
+100m / 200m
+
+256Mi / 512Mi
+
+Usage
+
 ./resize.sh [-n namespace] [-v] [--dry-run] <deployment-name> <size>
-Options:
--n, --namespace — Specify the OpenShift namespace (defaults to current project if not provided).
 
--v — Enable verbose mode (prints the generated JSON patch).
+Options
 
---dry-run — Perform a dry run without applying changes.
+-n, --namespace   : Specify the OpenShift namespace (defaults to current project if omitted)
 
--h, --help — Show usage help.
+-v                  : Enable verbose mode (prints the generated JSON patch)
 
-📚 Examples
-Resize my-deployment to Medium size in the current namespace:
+--dry-run           : Show the patch without applying it to the cluster
 
-bash
-Copiar
-Editar
+-h, --help        : Display usage information
+
+Examples
+
+Resize a deployment to Medium size in the current namespace:
+
 ./resize.sh my-deployment M
-Resize another-deployment in a specific namespace and preview changes without applying:
 
-bash
-Copiar
-Editar
+Resize a deployment in a specified namespace and preview the patch without applying it:
+
 ./resize.sh -n custom-namespace --dry-run -v another-deployment P
-⚡ Requirements
+
+Requirements
+
 OpenShift CLI (oc)
 
-jq (for JSON processing)
+jq (command-line JSON processor)
 
-📝 License
+Install them with:
+
+# On Fedora / RHEL / CentOS
+sudo dnf install -y jq
+
+# On Ubuntu / Debian
+sudo apt-get install -y jq
+
+Ensure oc is installed and that you are logged into your OpenShift cluster:
+
+oc login https://your-cluster-url
+
+License
+
 This project is licensed under the MIT License.
+
+Contributing
+
+Contributions, issues, and feature requests are welcome!
+Feel free to open an issue or submit a pull request.
+
+Author
+Bruno Almeida
