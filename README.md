@@ -5,13 +5,9 @@ A lightweight and user-friendly Bash script to resize container resources (CPU a
 Resize deployments quickly using simple size codes (PP, P, M, G, GG).
 
 Supports multiple containers within a single deployment.
-
 Dry Run Mode (--dry-run) — preview the JSON patch without applying changes.
-
 Verbose Mode (-v) — print the generated JSON patch body for review.
-
 Auto-detect namespace if not explicitly provided.
-
 Clear error handling and helpful usage output.
 
 🛠 Size Options
